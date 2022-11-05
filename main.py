@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify
 from threading import Thread
 from time import sleep
 from functions import *
@@ -8,16 +8,6 @@ app = Flask(__name__)
 threads = []
 
 data = []
-
-# Generates a public version of data to be sent to the client
-def make_public_data(data):
-    new_data = {}
-    for name in data:
-        if name == 'name':
-            new_data['URL'] = url_for('getOne', name = data['name'], _external = True)
-        else:
-            new_data[name] = data[name]
-    return new_data 
 
 @app.route('/', methods=['GET'])
 def welcomeMessage():
@@ -30,7 +20,7 @@ def returnAll():
 @app.route('/getData/<string:name>', methods=['GET'])
 def getOne(name):
     theOne = list(filter(lambda l: l['name'] == name, data)) 
-    return jsonify({'Specific Data:' : make_public_data(theOne[0])})
+    return jsonify({'Specific Data' : theOne[0]})
 
 @app.route('/postData', methods=['POST'])
 def addOne():
@@ -40,18 +30,16 @@ def addOne():
 
 @app.route('/putData/<string:name>', methods=['PUT'])
 def editOne(name):
-    new_item = request.get_json()
-    for i, q in enumerate(data):
-      if q['name'] == name:
-        data[i] = new_item    
-    return jsonify({'Data' : data})
+    theOne = list(filter(lambda l: l['name'] == name, data))
+    theOne[0]['name'] = request.json.get('name', theOne[0]['name'])
+    theOne[0]['age'] = request.json.get('age', theOne[0]['age'])
+    return jsonify({'Edited Data' : theOne[0]})
 
 @app.route('/deleteData/<string:name>', methods=['DELETE'])
 def deleteOne(name):
-    for i, q in enumerate(data):
-      if q['name'] == name:
-        del data[i]  
-    return jsonify({'Data' : data})
+    theOne = list(filter(lambda l: l['name'] == name, data))
+    data.remove(theOne[0])  
+    return jsonify({'Data Delete' : data})
 
 def run_requests():
     main_thread = Thread(target = lambda: app.run(host = '0.0.0.0', port = 5000, debug = False, use_reloader = False), daemon = True)
@@ -64,6 +52,12 @@ def run_requests():
     threads.append(thread3)
     thread4 = Thread(target = print_data, name = "Thread4")
     threads.append(thread4)
+    thread5 = Thread(target = put_data, name = "Thread5")
+    threads.append(thread5)
+    thread6 = Thread(target = print_all_data, name = "Thread6")
+    threads.append(thread6)
+    thread7 = Thread(target = delete_data, name = "Thread7")
+    threads.append(thread7)
     for thread in threads:
         thread.start()
         sleep(4)

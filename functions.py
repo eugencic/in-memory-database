@@ -12,7 +12,7 @@ def print_welcome_message():
     sleep(3)
     
 def print_all_data():
-    print("Empty Data:")
+    print("All Data:")
     allDataURL = 'http://localhost:5000/getData'
     request2 = requests.get(allDataURL)
     data2 = request2.json()
@@ -67,4 +67,40 @@ def print_data():
     data5 = request5.json()
     data5_formatted = json.dumps(data5, indent = 2)
     print(data5_formatted)
+    sleep(3)
+    
+def put_data():
+    URL1 = 'http://localhost:5000/putData/name1'
+    request1 = requests.put(URL1, json = {'age': '22', 'name': 'name6'})
+    data1 = request1.json()
+    data1_formatted = json.dumps(data1, indent = 2)
+    print(data1_formatted)
+    URL2 = 'http://localhost:5000/putData/name2'
+    request2 = requests.put(URL2, json = {'age': '49', 'name': 'name7'})
+    data2 = request2.json()
+    data2_formatted = json.dumps(data2, indent = 2)
+    print(data2_formatted)
+    URL3 = 'http://localhost:5000/putData/name3'
+    request3 = requests.put(URL3, json = {'age': '35', 'name': 'name8'})
+    data3 = request3.json()
+    data3_formatted = json.dumps(data3, indent = 2)
+    print(data3_formatted)
+    sleep(3)
+    
+def delete_data():
+    URL1 = 'http://localhost:5000/deleteData/name6'
+    request1 = requests.delete(URL1)
+    data1 = request1.json()
+    data1_formatted = json.dumps(data1, indent = 2)
+    print(data1_formatted)
+    URL2 = 'http://localhost:5000/deleteData/name7'
+    request2 = requests.delete(URL2)
+    data2 = request2.json()
+    data2_formatted = json.dumps(data2, indent = 2)
+    print(data2_formatted)
+    URL3 = 'http://localhost:5000/deleteData/name8'
+    request3 = requests.delete(URL3)
+    data3 = request3.json()
+    data3_formatted = json.dumps(data3, indent = 2)
+    print(data3_formatted)
     sleep(3)
