@@ -1,4 +1,4 @@
-# PR laboratory No.3
+# Network Programming laboratory Nr.3
 
 ## Minimum Acceptance Criteria
 
@@ -14,5 +14,5 @@ connection management)
 
 ### Clone the repository
 ```bash
-$ git clone https://github.com/eugencic/utm-in-memory-database
+$ git clone https://github.com/eugencic/in-memory-database
 ```
